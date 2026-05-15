@@ -9,6 +9,7 @@ This repository contains a small chain of agent skills for moving from a rough i
 3. **PRD** - synthesize modules, user stories, acceptance criteria, and scope boundaries into a markdown PRD.
 4. **Slice into issues** - turn the PRD into vertical tracer-bullet slices with structural links back to modules and acceptance criteria.
 5. **TDD** - implement one approved slice at a time with a red-green-refactor loop.
+6. **Orchestrate issues** - run ready issues sequentially with implementation/checker agents, one clean commit per issue.
 
 ## Skills
 
@@ -17,6 +18,7 @@ This repository contains a small chain of agent skills for moving from a rough i
 - `to-prd` - writes a durable, sliceable PRD from upstream planning and grilling artefacts.
 - `to-issues` - slices a PRD into dependency-ordered markdown implementation slices.
 - `tdd` - implements one slice or bugfix at a time using behavior-first TDD.
+- `orchestrate-issues` - orchestrates multiple ready issue files through implementation, independent checking, per-issue commits, and agent cleanup.
 
 ## Default Artefacts
 
