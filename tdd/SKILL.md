@@ -44,6 +44,8 @@ If working from a local markdown slice with frontmatter, preserve all existing f
 - Move `in_progress` to `done` only after tests and verification pass.
 - Move to `blocked` only when the slice cannot proceed without a specific missing decision, dependency, or acceptance-criteria clarification.
 
+If the user, an orchestrator, or another coordinating skill explicitly says it owns issue status or workflow metadata, do not update the slice file's status. Treat the current status as context, leave workflow metadata untouched, and report the status you would otherwise have set.
+
 If `blocked_by` references unfinished slices, stop and ask whether to implement the blocker first or override the dependency. Do not silently ignore dependency order.
 
 ## HITL and AFK
@@ -131,7 +133,7 @@ Before finishing:
 - Run the targeted tests for the changed area.
 - Run broader tests, lint, typecheck, or build when the repository makes those commands clear and the blast radius justifies it.
 - Confirm every acceptance criterion claimed by the slice is implemented or explicitly call out any remainder.
-- If working from a markdown slice, update its `status` according to the slice status convention above.
+- If working from a markdown slice and no coordinator owns status, update its `status` according to the slice status convention above.
 
 Do not mark unrelated slices or parent PRDs complete.
 
