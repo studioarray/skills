@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript Craft"
+  short_description: "Maintainable TypeScript and React implementation guidance"
+  default_prompt: "Use this skill when implementing, refactoring, or reviewing backend TypeScript or React TypeScript code so the result is clean, composed, testable, and maintainable."

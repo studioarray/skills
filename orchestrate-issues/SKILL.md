@@ -80,6 +80,8 @@ For `docs/issues/*.md` slices, ask the implementation agent to use the TDD skill
 - tests/checks run
 - notes or blockers
 
+If the issue touches backend TypeScript, Node TypeScript, or React TypeScript, also ask the implementation agent to use the `typescript-craft` skill as a companion to TDD. The worker should keep first-pass code maintainable: avoid private-function villages, preserve ownership boundaries, split product/domain responsibilities when they have separate reasons to change, keep TypeScript types honest, and flag larger refactors that fall outside the issue scope.
+
 Tell the implementation agent to preserve any architecture notes in the issue file. If the slice touches UI, state orchestration, external adapters, or domain logic, it should avoid collapsing the whole feature into one monolithic file and should use the repo's existing composition patterns.
 
 If the agent is blocked by missing project dependencies, let it install project-local dependencies from repository lockfiles when appropriate. For global tools, network installs, or sandbox escalation, follow the normal permission flow. If the dependency is clearly required for project success, do not abandon the issue merely because installation is inconvenient; escalate or ask the user as needed.
@@ -93,6 +95,7 @@ After the implementation agent reports done, set the issue to `review` and launc
 - the changed files are scoped to the current issue
 - issue status/workflow metadata was not edited by the implementation agent
 - architecture notes are honored, and the implementation does not introduce avoidable monolithic files, mixed-responsibility React components, broad boolean prop surfaces, or poorly isolated external adapters
+- for backend TypeScript, Node TypeScript, or React TypeScript changes, the implementation follows `typescript-craft`: cohesive files, clear ownership, appropriate domain/application/adapter/UI placement, focused types, and behavior-oriented tests
 
 Ask the checker for a clear verdict:
 

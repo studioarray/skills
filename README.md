@@ -11,6 +11,7 @@ These skills are meant to work as a planning-and-implementation process:
 - **PRD** - synthesize modules, user stories, acceptance criteria, and scope boundaries into a markdown PRD.
 - **Slice into issues** - turn the PRD into vertical tracer-bullet slices with structural links back to modules and acceptance criteria.
 - **TDD** - implement one approved slice at a time with a red-green-refactor loop.
+- **TypeScript craft** - companion guidance for backend TypeScript and React TypeScript implementation so first-pass code stays maintainable, composed, and well-placed.
 - **Orchestrate issues** - run ready issues sequentially with implementation/checker agents, one clean commit per issue.
 
 ## Skills
@@ -20,6 +21,7 @@ These skills are meant to work as a planning-and-implementation process:
 - `to-prd` - writes a durable, sliceable PRD from upstream planning and grilling artefacts.
 - `to-issues` - slices a PRD into dependency-ordered markdown implementation slices.
 - `tdd` - implements one slice or bugfix at a time using behavior-first TDD.
+- `typescript-craft` - default companion for backend TypeScript and React TypeScript work, emphasizing maintainable code shape, DDD/hexagonal placement, React composition, TypeScript hygiene, and focused tests.
 - `orchestrate-issues` - orchestrates multiple ready issue files through implementation, independent checking, per-issue commits, and agent cleanup.
 
 ## Default Artefacts
