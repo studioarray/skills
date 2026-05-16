@@ -5,17 +5,17 @@ description: Slice a PRD into independently-grabbable, tracer-bullet vertical-sl
 
 # To Issues
 
-## Your role in the chain
+## Your role in the process
 
-This skill is step 4 in a five-step chain:
+This skill is part of a planning-and-implementation process:
 
-1. **Plan** — rough description (informal, no skill required)
-2. **Grill** — stress-test and sharpen
-3. **PRD** — modules, user stories with ACs, scope boundaries
-4. **Slice into issues (this skill)** — vertical tracer-bullet decomposition
-5. **TDD** — implement one slice at a time
+- **Plan** — rough description (informal, no skill required)
+- **Grill** — stress-test and sharpen
+- **PRD** — modules, user stories with ACs, scope boundaries
+- **Slice into issues (this skill)** — vertical tracer-bullet decomposition
+- **TDD** — implement one slice at a time
 
-Everything outside step 4 is out of scope. Do not redesign modules (that was step 3). Do not write code or tests (that's step 5). Your single job is to take a PRD and produce a buildable, dependency-ordered sequence of vertical slices, each one structurally tied back to the PRD.
+Everything outside slicing is out of scope. Do not redesign modules (that was PRD synthesis). Do not write code or tests (that's TDD). Your single job is to take a PRD and produce a buildable, dependency-ordered sequence of vertical slices, each one structurally tied back to the PRD.
 
 ## Process
 
@@ -40,12 +40,14 @@ Break the plan into **tracer-bullet** slices. Each slice is a thin vertical slic
 - A completed slice is demoable or verifiable on its own
 - Prefer many thin slices over few thick ones
 - The first slice should be the thinnest plausible end-to-end thing — a "walking skeleton" that proves the modules can talk to each other
+- A slice may touch multiple files or components when that keeps responsibilities composed and prevents one monolithic file
 </vertical-slice-rules>
 
 **Each slice must explicitly cite:**
 
 - **Modules touched** — naming modules from the PRD's Modules section. If a slice would touch every module, that's a smell: either the slice is too thick, or the modules aren't actually decoupled.
 - **Acceptance criteria satisfied** — referencing specific ACs from the PRD's User Stories section, by story number and AC index (e.g. story 2, AC 1).
+- **Architecture notes** — any composition boundary, public interface, or split of responsibilities the implementer must preserve. This is especially important for React or UI-heavy slices where orchestration, state, data loading, and presentation can easily collapse into one file.
 
 After drafting, run two coverage checks:
 
@@ -70,6 +72,7 @@ Present the proposed breakdown as a numbered list. For each slice, show:
 - **Modules touched** — from PRD Modules section
 - **ACs satisfied** — by story number and AC index
 - **Blocked by** — which other slices (if any) must complete first
+- **Architecture notes** — any composition boundary needed to keep the slice maintainable
 
 Also show:
 
@@ -140,6 +143,10 @@ Avoid specific file paths or code snippets — they go stale fast. **Exception:*
 
 - **`<ModuleName>`** — what this slice does to it (extend interface, add new method, etc.)
 - **`<ModuleName>`** — what this slice does to it
+
+## Architecture notes
+
+Describe any composition boundaries the implementer should preserve: public interfaces, ownership of state or orchestration, reusable components/hooks, adapters around external systems, or reasons this slice should be split across files instead of concentrated in one large file. Write "None beyond existing patterns" when no special composition pressure exists.
 
 ## Acceptance criteria
 

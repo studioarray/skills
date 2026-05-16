@@ -5,17 +5,17 @@ description: Implement one approved slice or bugfix using test-driven developmen
 
 # Test-Driven Development
 
-## Your role in the chain
+## Your role in the process
 
-This skill is step 5 in a five-step planning-and-implementation chain:
+This skill is part of a planning-and-implementation process:
 
-1. **Plan** - rough feature description (informal, no skill required)
-2. **Grill** - stress-test the plan, sharpen terminology, capture decisions
-3. **PRD** - modules, user stories, acceptance criteria, scope boundaries
-4. **Slice into issues** - vertical tracer-bullet decomposition
-5. **TDD (this skill)** - implement one approved slice at a time
+- **Plan** - rough feature description (informal, no skill required)
+- **Grill** - stress-test the plan, sharpen terminology, capture decisions
+- **PRD** - modules, user stories, acceptance criteria, scope boundaries
+- **Slice into issues** - vertical tracer-bullet decomposition
+- **TDD (this skill)** - implement one approved slice at a time
 
-Everything outside step 5 is out of scope. Do not re-grill the problem space. Do not rewrite the PRD. Do not redefine modules. Do not split or reorder slices unless the user explicitly asks. Your job is to take one buildable unit of work and drive it to tested, working code.
+Everything outside TDD implementation is out of scope. Do not re-grill the problem space. Do not rewrite the PRD. Do not redefine modules. Do not split or reorder slices unless the user explicitly asks. Your job is to take one buildable unit of work and drive it to tested, working code.
 
 ## Source of truth
 
@@ -29,6 +29,7 @@ Read the slice frontmatter and body before editing code:
 - `modules_touched`
 - `acceptance_criteria`
 - `blocked_by`
+- "Architecture notes"
 - "What to build"
 - "Acceptance criteria"
 
@@ -60,7 +61,7 @@ Tests should verify behavior through public interfaces, not implementation detai
 
 Avoid tests that mock internal collaborators, call private methods, assert internal call order, or verify state through a back door. A test that fails after a harmless refactor was probably coupled to implementation.
 
-Read [tests.md](./tests.md) for test examples and [mocking.md](./mocking.md) when a system boundary needs a fake.
+Read [tests.md](./tests.md) for test examples and [mocking.md](./mocking.md) when a system boundary needs a fake. Read [composition-architecture.md](./composition-architecture.md) when a slice touches UI/component structure, state orchestration, or a file begins mixing too many responsibilities.
 
 ## Anti-pattern: horizontal TDD
 
@@ -94,6 +95,7 @@ Before writing tests, identify:
 - The acceptance criteria or observed bug behavior to prove
 - The smallest first tracer bullet
 - Any system boundaries that need controlled fakes
+- Any composition pressure: files or components that would become monolithic, UI state that needs a focused owner, domain logic that belongs behind a small public interface, or adapters that should isolate external systems
 
 If this information is already in the slice, do not ask the user to confirm it again. Ask only when the source artefact is missing, contradictory, blocked, or outside the current repo's visible behavior.
 
@@ -108,6 +110,8 @@ If the test passes immediately, inspect whether behavior already exists. Do not 
 Write the smallest production change that makes the current test pass. Do not implement future acceptance criteria early. Run the narrow test again.
 
 If the implementation exposes a bad interface, prefer a small interface adjustment over adding brittle test setup. Use [interface-design.md](./interface-design.md) and [deep-modules.md](./deep-modules.md) as guides.
+
+Small does not mean "put everything in the same file." If the minimal passing change would mix unrelated responsibilities, keep the behaviour narrow but introduce the smallest useful composition boundary.
 
 ### 4. Repeat
 
@@ -126,6 +130,8 @@ Only refactor when tests are green. Look for duplication, shallow modules, awkwa
 
 Run tests after each meaningful refactor.
 
+Treat newly monolithic files as refactor candidates when they combine orchestration, state, data access, validation, rendering, and presentation in a way that will make the next slice harder. For React or similar UI work, prefer composed components/hooks and domain-shaped interfaces over giant components with broad prop surfaces.
+
 ### 6. Verify the slice
 
 Before finishing:
@@ -133,6 +139,7 @@ Before finishing:
 - Run the targeted tests for the changed area.
 - Run broader tests, lint, typecheck, or build when the repository makes those commands clear and the blast radius justifies it.
 - Confirm every acceptance criterion claimed by the slice is implemented or explicitly call out any remainder.
+- Check that the final shape preserves the slice's architecture notes and does not leave avoidable monolithic files or mixed-responsibility components in the touched area.
 - If working from a markdown slice and no coordinator owns status, update its `status` according to the slice status convention above.
 
 Do not mark unrelated slices or parent PRDs complete.

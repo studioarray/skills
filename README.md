@@ -2,14 +2,16 @@
 
 This repository contains a small chain of agent skills for moving from a rough idea to tested implementation without relying on session memory or a specific issue tracker.
 
-## Chain
+## Process
 
-1. **Plan** - informal chat or notes that sketch the idea. No skill required.
-2. **Grill** - stress-test the plan, sharpen terminology, and capture durable shared-language docs and ADRs.
-3. **PRD** - synthesize modules, user stories, acceptance criteria, and scope boundaries into a markdown PRD.
-4. **Slice into issues** - turn the PRD into vertical tracer-bullet slices with structural links back to modules and acceptance criteria.
-5. **TDD** - implement one approved slice at a time with a red-green-refactor loop.
-6. **Orchestrate issues** - run ready issues sequentially with implementation/checker agents, one clean commit per issue.
+These skills are meant to work as a planning-and-implementation process:
+
+- **Plan** - informal chat or notes that sketch the idea. No skill required.
+- **Grill** - stress-test the plan, sharpen terminology, and capture durable shared-language docs and ADRs.
+- **PRD** - synthesize modules, user stories, acceptance criteria, and scope boundaries into a markdown PRD.
+- **Slice into issues** - turn the PRD into vertical tracer-bullet slices with structural links back to modules and acceptance criteria.
+- **TDD** - implement one approved slice at a time with a red-green-refactor loop.
+- **Orchestrate issues** - run ready issues sequentially with implementation/checker agents, one clean commit per issue.
 
 ## Skills
 

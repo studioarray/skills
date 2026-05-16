@@ -10,6 +10,8 @@ After a TDD cycle, look for:
 - **Feature envy**: move logic closer to the data or concept it belongs to
 - **Primitive obsession**: introduce value objects or domain types when they reduce mistakes
 - **Awkward test setup**: simplify the public interface or boundary shape
+- **Monolithic files**: split orchestration, state, adapters, domain logic, and presentation when their reasons to change have drifted apart
+- **UI prop soup**: replace broad boolean-heavy component APIs with composition, focused subcomponents, hooks, slots, or domain-shaped props
 - **Newly visible debt**: clean up existing code only when it is in the path of the slice
 
 Run tests after each meaningful refactor step.

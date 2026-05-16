@@ -5,17 +5,17 @@ description: Synthesise a PRD from upstream context (shared-language docs, ADRs,
 
 # To PRD
 
-## Your role in the chain
+## Your role in the process
 
-This skill is one step in a five-step planning-and-implementation chain:
+This skill is part of a planning-and-implementation process:
 
-1. **Plan** — rough feature description (informal, no skill required)
-2. **Grill** — stress-test the plan, sharpen terminology, capture decisions
-3. **PRD (this skill)** — synthesise modules, user stories, acceptance criteria, scope boundaries
-4. **Slice into issues** — cut the PRD into vertical tracer-bullet slices
-5. **TDD** — implement one slice at a time
+- **Plan** — rough feature description (informal, no skill required)
+- **Grill** — stress-test the plan, sharpen terminology, capture decisions
+- **PRD (this skill)** — synthesise modules, user stories, acceptance criteria, scope boundaries
+- **Slice into issues** — cut the PRD into vertical tracer-bullet slices
+- **TDD** — implement one slice at a time
 
-Everything outside step 3 is out of scope for this skill. Do not invent the initial plan (that's informal step 1). Do not re-discover or stress-test the problem (that's grilling). Do not decide build order (that's slicing). Do not write code (that's TDD). Your single job is to turn upstream artefacts into a durable, sliceable specification.
+Everything outside PRD synthesis is out of scope for this skill. Do not invent the initial plan (that's informal planning). Do not re-discover or stress-test the problem (that's grilling). Do not decide build order (that's slicing). Do not write code (that's TDD). Your single job is to turn upstream artefacts into a durable, sliceable specification.
 
 ## Synthesis-first posture
 
@@ -41,6 +41,8 @@ Explore the repo. Locate and read any shared-language documentation, ADRs, or eq
 Sketch the major modules you will need to build or modify. Actively look for opportunities to extract deep modules that can be tested in isolation.
 
 A deep module is one which encapsulates a lot of functionality behind a simple, testable interface which rarely changes. (As opposed to a shallow module, where the interface is nearly as complex as the implementation.)
+
+For UI-heavy work, also sketch composition boundaries when they matter: which component, hook, controller, state machine, or adapter should own orchestration, and which pieces should stay presentational or reusable. Do not let "module" become a license to put the whole feature into one large file.
 
 **Checkpoint 1 (counts toward question budget):** Present the module sketch to the user. Ask whether the shape matches their expectations, and which modules they want tested. One question, not a conversation.
 
@@ -141,6 +143,7 @@ A list of implementation decisions that fall _outside_ what's already captured i
 - Schema changes
 - API contracts
 - Specific interactions
+- Composition boundaries for UI, state, or domain logic when a monolithic file would mix too many reasons to change
 
 Reference relevant ADRs by identifier rather than restating them.
 

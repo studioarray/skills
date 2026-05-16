@@ -5,17 +5,17 @@ description: Grilling session that challenges a plan against the existing domain
 
 # Grill With Docs
 
-## Your role in the chain
+## Your role in the process
 
-This skill is step 2 in a five-step planning-and-implementation chain:
+This skill is part of a planning-and-implementation process:
 
-1. **Plan** — rough feature description (informal, no skill required)
-2. **Grill (this skill)** — stress-test the plan, sharpen terminology, capture decisions
-3. **PRD** — modules, user stories, acceptance criteria, scope boundaries
-4. **Slice into issues** — vertical tracer-bullet decomposition
-5. **TDD** — implement one slice at a time
+- **Plan** — rough feature description (informal, no skill required)
+- **Grill (this skill)** — stress-test the plan, sharpen terminology, capture decisions
+- **PRD** — modules, user stories, acceptance criteria, scope boundaries
+- **Slice into issues** — vertical tracer-bullet decomposition
+- **TDD** — implement one slice at a time
 
-Everything outside step 2 is out of scope. Do not create the initial plan from nothing; grilling needs at least a rough idea, proposal, or design to challenge. Do not write a PRD. Do not define implementation modules, user stories, acceptance criteria, build order, issue slices, tests, or code. Your job is to create the shared language and decision record that downstream skills can consume even if conversation context is lost.
+Everything outside grilling is out of scope. Do not create the initial plan from nothing; grilling needs at least a rough idea, proposal, or design to challenge. Do not write a PRD. Do not define implementation modules, user stories, acceptance criteria, build order, issue slices, tests, or code. Your job is to create the shared language and decision record that downstream skills can consume even if conversation context is lost.
 
 ## Operating posture
 

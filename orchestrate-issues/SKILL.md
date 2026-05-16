@@ -9,14 +9,14 @@ description: Sequentially orchestrate implementation of multiple markdown issue 
 
 Act as the orchestrator for a queue of issue files. Do not implement the issues yourself, do not perform the review yourself, and do not reshape the issue list. Your job is to sequence the work, steer subagents, maintain issue status, commit completed issues, clean up agents, and stop with a useful report when the run needs human input.
 
-This skill is a continuation of the planning chain:
+This skill is a continuation of the planning-and-implementation process:
 
-1. **Plan** - rough feature description
-2. **Grill** - stress-test and sharpen
-3. **PRD** - modules, user stories, acceptance criteria, scope boundaries
-4. **Slice into issues** - vertical tracer-bullet decomposition
-5. **TDD** - implement one approved slice at a time
-6. **Orchestrate issues (this skill)** - run multiple ready issues through implementation, checking, and commits
+- **Plan** - rough feature description
+- **Grill** - stress-test and sharpen
+- **PRD** - modules, user stories, acceptance criteria, scope boundaries
+- **Slice into issues** - vertical tracer-bullet decomposition
+- **TDD** - implement one approved slice at a time
+- **Orchestrate issues (this skill)** - run multiple ready issues through implementation, checking, and commits
 
 ## Core Invariants
 
@@ -26,6 +26,7 @@ This skill is a continuation of the planning chain:
 - Own only issue workflow status; do not edit issue content, acceptance criteria, or implementation details.
 - Commit exactly one completed issue at a time.
 - Close agents for an issue after the issue is committed or abandoned.
+- Completing one issue is not a successful run if more eligible issues remain in the requested scope.
 - If you suspect a problem, launch or reuse an agent to investigate or fix it instead of doing the substantive work yourself.
 
 ## Issue Scope
@@ -33,6 +34,10 @@ This skill is a continuation of the planning chain:
 Default to `docs/issues/*.md` unless the user names another issue directory or specific files. Read the issue files and process eligible issues in the order that best respects filename order, `blocked_by`, and `status`.
 
 Treat an issue as eligible when it is `status: ready` and its blockers, if any, are already done. Skip or report other statuses using judgment; do not turn ordinary queue bookkeeping into ceremony.
+
+The default run target is all eligible ready issues in scope. If the user says "next ready issue" or similar, interpret that as the starting point of the queue and keep going after each successful commit. Process only one issue when the user explicitly says to run a single issue, just the next issue, or names a specific issue.
+
+After each successful commit, re-read the issue files before choosing the next issue. A completed issue may unblock more ready work.
 
 If the user names a specific issue, range, or subset, process only that subset.
 
@@ -75,6 +80,8 @@ For `docs/issues/*.md` slices, ask the implementation agent to use the TDD skill
 - tests/checks run
 - notes or blockers
 
+Tell the implementation agent to preserve any architecture notes in the issue file. If the slice touches UI, state orchestration, external adapters, or domain logic, it should avoid collapsing the whole feature into one monolithic file and should use the repo's existing composition patterns.
+
 If the agent is blocked by missing project dependencies, let it install project-local dependencies from repository lockfiles when appropriate. For global tools, network installs, or sandbox escalation, follow the normal permission flow. If the dependency is clearly required for project success, do not abandon the issue merely because installation is inconvenient; escalate or ask the user as needed.
 
 ## Checker Agent
@@ -85,6 +92,7 @@ After the implementation agent reports done, set the issue to `review` and launc
 - relevant tests/checks pass, or unrun checks are explicitly justified
 - the changed files are scoped to the current issue
 - issue status/workflow metadata was not edited by the implementation agent
+- architecture notes are honored, and the implementation does not introduce avoidable monolithic files, mixed-responsibility React components, broad boolean prop surfaces, or poorly isolated external adapters
 
 Ask the checker for a clear verdict:
 
