@@ -2,6 +2,17 @@
 
 This repository contains a small chain of agent skills for moving from a rough idea to tested implementation without relying on session memory or a specific issue tracker.
 
+## Install with Pi
+
+Install the skills directly from GitHub:
+
+```bash
+pi install git:github.com/studioarray/skills
+```
+
+After installing in a running Pi session, use `/reload` or restart Pi. The skills are then available as `/skill:<name>` commands and through Pi's automatic skill selection.
+
+
 ## Process
 
 These skills are meant to work as a planning-and-implementation process:

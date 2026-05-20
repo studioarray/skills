@@ -1,0 +1,36 @@
+{
+  "name": "@studioarray/pi-skills",
+  "version": "0.1.0",
+  "description": "Pi skills for grilling plans, writing PRDs, slicing issues, TDD implementation, and TypeScript craft guidance.",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "agent-skills",
+    "skills"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/studioarray/skills.git"
+  },
+  "files": [
+    "README.md",
+    "grill-me/",
+    "grill-with-docs/",
+    "orchestrate-issues/",
+    "tdd/",
+    "to-issues/",
+    "to-prd/",
+    "typescript-craft/"
+  ],
+  "pi": {
+    "skills": [
+      "./grill-me",
+      "./grill-with-docs",
+      "./orchestrate-issues",
+      "./tdd",
+      "./to-issues",
+      "./to-prd",
+      "./typescript-craft"
+    ]
+  }
+}
