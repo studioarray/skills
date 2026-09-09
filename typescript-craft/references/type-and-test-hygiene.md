@@ -1,86 +1,43 @@
-# Type And Test Hygiene
+# Type and test hygiene
 
-Use this reference when a TypeScript change introduces new types, public interfaces, fakes, harnesses, or notable test structure.
+## Model the contract
 
-## Types
+Use discriminated unions for mutually exclusive modes and meaningful state transitions. Keep independent settings independent. Where every variant needs handling, use exhaustive checking so a new variant exposes missing cases.
 
-Types should express real states and reduce caller knowledge.
+Use explicit types for deliberate public contracts and inference for clear local values. Reuse an existing source of truth for a shape. Reserve `Record<string, unknown>` for genuinely dynamic records.
 
-Prefer:
+Named aliases improve vocabulary, but `type UserId = string` and `type OrderId = string` remain interchangeable. When that interchangeability must be rejected, use the project's established brand or wrapper pattern at the relevant boundary. A brand still needs a justified construction path.
 
-- discriminated unions for meaningful modes
-- explicit project-owned types for known shapes
-- value objects or named types when primitives are easy to mix up
-- narrow public interfaces with domain-shaped inputs and outputs
-- `readonly` inputs when mutation is not part of the contract
+Use `readonly` contracts when mutation is not part of the operation. They restrict writes through that typed reference; they do not freeze runtime objects, recursively protect nested values, or prevent mutation through another alias.
 
-Avoid:
+## Validate at trust boundaries
 
-- broad optional bags that represent several modes
-- parallel booleans that can contradict each other
-- `Record<string, unknown>` outside genuine dynamic data
-- type aliases that only rename noise
-- leaking SDK, ORM, transport, or database shapes across ownership boundaries
+Treat untrusted JSON, requests, stored data without established guarantees, and external messages as unknown until checked. Use the project's existing parser or focused runtime checks, then expose the validated contract to internal code. Validate what the receiving operation relies on and define how invalid input is rejected or handled.
 
-Use `unknown` for genuinely unknown external input. Narrow it promptly at the boundary and convert it to project-owned types before the data crosses inward.
+Type annotations, `as`, and non-null assertions do not perform runtime validation. Use narrowing backed by actual checks; an assertion or user-defined type predicate is only as sound as the evidence supporting it. Keep unavoidable assertions around a verified library limitation narrow and explain the invariant that makes them safe.
 
-## Exports
+Reuse validation guarantees already established by the framework or a trusted internal caller. Trust boundaries need checks; crossing a file boundary alone does not require another parse. A small payload may need only a few checks, not a new schema dependency.
 
-Exports are part of the module interface.
+For example, treating `JSON.parse(text) as Order` as validation leaves malformed fields unchecked. Parse into `unknown`, check the fields and invariants required by the operation, and handle invalid JSON and invalid shapes through the existing error contract.
 
-Export deliberately:
+## Respect compiler and runtime semantics
 
-- public functions/classes/types callers are meant to use
-- stable DTOs or view models that define a boundary
-- factories/builders that reduce test or call-site noise
+Use the installed TypeScript version and the repository's module, import, and runtime conventions. Prefer strict checking for new projects. `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` add checks beyond `strict`; evaluate them when configuring a project, without turning an unrelated change into a compiler migration.
 
-Keep private:
+Handle nullable values, missing indexed entries, and optional fields according to their actual contracts, even where current compiler settings are permissive. Node's native type stripping and other transpilation-only workflows need a separate type check.
 
-- helper functions used by one module
-- formatting details
-- mapping internals
-- temporary compatibility code
+## Test meaningful behavior
 
-If another module needs a helper, consider whether the helper is really a public concept or whether the caller should use a deeper module interface instead.
+Test through a module, API, command, or UI contract. Include invalid input and failure paths relevant to the change. Choose integration checks when behavior depends on a real adapter or framework; a fake alone cannot verify that integration.
 
-## Names
+Keep helpers private rather than exporting them solely to test implementation details. Mock genuine system boundaries when needed. Assert call order only when the order itself is required behavior.
 
-Use names that reveal ownership.
+Use fixtures or builders when they remove repeated, irrelevant setup. Keep fixtures focused on data and setup; exercise production code for behavior. Prefer focused assertions over snapshots that conceal the important result. Split test files by distinct behavior or module responsibility when that improves navigation.
 
-Prefer:
+## Sources
 
-- domain and product terms
-- verbs for commands and transformations
-- nouns for state, projections, adapters, and value concepts
-- names that say what policy is owned here
-
-Avoid vague names unless the repo has a strong convention:
-
-- `utils`
-- `helpers`
-- `manager`
-- `service`
-- `common`
-- `misc`
-
-## Tests
-
-Tests should make public behavior easier to trust.
-
-Prefer:
-
-- behavior through module, API, UI, or command surfaces
-- realistic builders and fixtures
-- fakes at true system boundaries
-- one focused behavior per test
-- test files split around distinct modules or behavior clusters
-
-Avoid:
-
-- mocking internal collaborators just to assert call order
-- testing private helpers directly
-- giant setup repeated across tests
-- harnesses that reimplement production behavior
-- snapshot tests that hide the behavior being protected
-
-When tests are painful, treat that as design feedback. The right fix may be a smaller public interface, a better fixture builder, or a clearer module boundary.
+- [TypeScript, narrowing and exhaustive checks](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+- [TypeScript, aliases, inference, and assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
+- [TypeScript, readonly properties](https://www.typescriptlang.org/docs/handbook/2/objects.html#readonly-properties)
+- [TypeScript, compiler options](https://www.typescriptlang.org/tsconfig/)
+- [Node.js, TypeScript execution](https://nodejs.org/api/typescript.html#type-stripping)

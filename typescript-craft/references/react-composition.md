@@ -1,85 +1,43 @@
-# React TypeScript Composition
+# React composition
 
-Use this reference when React TypeScript touches component structure, hooks, view models, component APIs, local UI state, or UI tests.
+## Give state one owner
 
-## Ownership
+Keep state near the components that use it. Components at any level may own state. When several components must stay synchronized, use their nearest appropriate common parent or the repository's existing shared store/provider.
 
-React code stays maintainable when each layer has a clear owner.
+A custom hook shares logic. Separate calls that create local state have independent state. A hook may expose shared state by reading the same context or store, or run once in a common parent whose values are passed down.
 
-- Pages, routes, and containers own orchestration.
-- Providers adapt broad app state into focused UI contracts.
-- Hooks own meaningful state workflows, subscriptions, effects, or reusable interaction logic.
-- View-model modules derive render-ready data from raw snapshots or DTOs.
-- Components render focused UI and emit events.
-- Leaf components may own leaf-local state such as disclosure, draft text, focus, or hover state.
+For example, calling a locally stateful `useDraft()` separately in an editor and preview will not synchronize them. Put the draft in a common owner and give each component the data and events it needs.
 
-If a component fetches data, transforms it, validates it, handles workflow state, renders several product areas, and formats details, it is carrying too many reasons to change.
+Use a reducer or named workflow hook when it clarifies related transitions. Introduce context when consumers need shared access; keep ordinary local state local.
 
-## Component Files
+## Derive values during rendering
 
-Prefer product-area files over a single large component file once the areas are independently meaningful.
+Calculate values from current props and state during render. A local `const total = items.length` needs no view-model module. Extract a pure transformation when its complexity, reuse, or domain meaning warrants a separate name or module.
 
-Examples of natural splits:
+Avoid maintaining a second state value for data that can be derived. Keep rendering pure. Use memoization when there is a concrete performance or identity requirement, following the repository's tooling and conventions.
 
-- shell
-- status area
-- conversation feed
-- feed item variants
-- prompt composer
-- connection screen
-- theme control
-- empty, blocked, or error states
+## Use Effects for external synchronization
 
-Small private components are fine while they serve one local concept. When a file becomes a private-function village for multiple product areas, split it.
+Put interaction-specific work in event handlers. Use Effects to synchronize with external systems, declare their reactive dependencies, and clean up subscriptions or resources. Cleanup should tolerate setup running again in development.
 
-## Props And Composition
+For asynchronous work, handle failure and prevent obsolete results from overwriting current state. Abort obsolete requests when supported, or ignore their results. Follow the framework's existing data-loading and caching approach before adding a fetching Effect.
 
-Prefer composition over configuration.
+## Compose around product responsibilities
 
-Warning signs:
+Separate independently meaningful UI areas when that makes ownership clearer. Small private components can stay in the same file. Follow the framework's route and server/client conventions; a page/hook/view-model/component stack is optional.
 
-- many optional props
-- several boolean mode props
-- prop names that only matter in one branch
-- conditionals for unrelated flows
-- one component that knows every variant
+When props describe distinct modes, use discriminated props or focused variants. Independent options can remain booleans. Use children or slots for real extension points. Compound components and providers are useful when they coordinate shared behavior; simple named components often suffice.
 
-Better shapes:
+## Test what users can do
 
-- explicit variant components
-- discriminated props for real modes
-- children or slots for extension points
-- small compound components for shared context
-- focused hooks for reusable workflows
-- view-model types that match product modes
+Use the repository's UI test tools to exercise visible behavior through roles, labels, text, and realistic user actions. Cover relevant loading, error, and interaction states. Prefer assertions about rendered results over private hook calls or component wiring.
 
-Do not create a compound-component framework unless the component actually has reusable internal coordination. Simple named components are often better.
+Choose fixtures at the boundary being tested. A view-model fixture can isolate presentation, but it cannot verify fetching or transport integration. Include those paths when their behavior is part of the change.
 
-## State
+## Sources
 
-Keep state as close to its owner as possible.
-
-- Leaf-local UI state can stay local.
-- Shared UI state belongs in a focused provider, parent, store, or hook.
-- Derived render data belongs in a view model or selector-like function.
-- Domain or application rules do not belong in React state code.
-
-When local state starts coordinating several product areas, promote the workflow into a named hook, reducer, state machine, or view-model module.
-
-## Tests
-
-React tests should assert visible behavior and user affordances.
-
-Prefer:
-
-- rendered text, roles, labels, and disabled/enabled states
-- user events through public UI
-- product modes expressed through realistic fixtures
-- focused fixtures that hide irrelevant raw state
-
-Avoid:
-
-- testing private component call structure
-- asserting implementation-only hook calls
-- rebuilding huge snapshots in every test
-- faking transport or protocol behavior inside UI tests when a store/view-model fixture would do
+- [React, sharing state](https://react.dev/learn/sharing-state-between-components)
+- [React, custom hooks](https://react.dev/learn/reusing-logic-with-custom-hooks)
+- [React, deriving values and avoiding unnecessary Effects](https://react.dev/learn/you-might-not-need-an-effect)
+- [React, synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects)
+- [Testing Library, guiding principles](https://testing-library.com/docs/guiding-principles/)
