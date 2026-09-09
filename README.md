@@ -1,50 +1,59 @@
-# Skills
+# Studio Array skills
 
-This repository contains a small chain of agent skills for moving from a rough idea to tested implementation without relying on session memory or a specific issue tracker.
+Reusable agent skills for implementing GitHub issues, reviewing pull requests, and working in TypeScript.
 
-## Install with Pi
+| Skill | Purpose |
+| --- | --- |
+| [TypeScript Craft](typescript-craft/SKILL.md) | Guide backend and React TypeScript implementation, module structure, types, and tests. |
+| [Issue to PR](issue-to-pr/SKILL.md) | Coordinate implementation of a GitHub issue and its sub-issues, then review the resulting PR. |
+| [PR review orchestration](pr-review-orchestration/SKILL.md) | Coordinate QA and fixes for an existing PR until merge readiness. |
 
-Install the skills directly from GitHub:
+## Install in Codex
+
+Ask Codex to install the skills on each computer:
+
+```text
+Use $skill-installer to install typescript-craft, issue-to-pr, and
+pr-review-orchestration from https://github.com/studioarray/skills.
+```
+
+The installer creates personal skill copies. To update an existing installation, ask Codex to update it from this repository.
+
+## Use
+
+```text
+$issue-to-pr https://github.com/owner/repo/issues/123
+```
+
+```text
+$pr-review-orchestration https://github.com/owner/repo/pull/456
+```
+
+```text
+$typescript-craft Implement this TypeScript feature.
+```
+
+The skills can also be selected automatically when a request matches their purpose. `issue-to-pr` uses `pr-review-orchestration` for its review stage.
+
+The orchestration skills use GPT-6 Astra medium subagents for implementation and QA. They create or update PRs, commit and push changes, and post review and fix comments. They stop at merge readiness. Testing follows each repository's guidance and CI workflows.
+
+## Dependencies
+
+The orchestration skills expect GitHub access, a local repository checkout, and Codex subagent tools with the requested model available. They also use these separately installed skills:
+
+- `code-review`
+- `ponytail:ponytail-review`
+- `ponytail:ponytail`
+- `codebase-design`
+
+These dependencies are not bundled here. Install them on each computer alongside this collection. TypeScript Craft includes its supporting references in this repository.
+
+## Pi
+
+The repository also retains Pi package metadata:
 
 ```bash
 pi install git:github.com/studioarray/skills
 ```
 
-After installing in a running Pi session, use `/reload` or restart Pi. The skills are then available as `/skill:<name>` commands and through Pi's automatic skill selection.
-
-
-## Process
-
-These skills are meant to work as a planning-and-implementation process:
-
-- **Plan** - informal chat or notes that sketch the idea. No skill required.
-- **Grill** - stress-test the plan, sharpen terminology, and capture durable shared-language docs and ADRs.
-- **PRD** - synthesize modules, user stories, acceptance criteria, and scope boundaries into a markdown PRD.
-- **Slice into issues** - turn the PRD into vertical tracer-bullet slices with structural links back to modules and acceptance criteria.
-- **TDD** - implement one approved slice at a time with a red-green-refactor loop.
-- **TypeScript craft** - companion guidance for backend TypeScript and React TypeScript implementation so first-pass code stays maintainable, composed, and well-placed.
-- **Orchestrate issues** - run ready issues sequentially with implementation/checker agents, one clean commit per issue.
-
-## Skills
-
-- `grill-me` - plain grilling session for an existing rough plan or design.
-- `grill-with-docs` - grilling session that updates `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs as decisions crystallize.
-- `to-prd` - writes a durable, sliceable PRD from upstream planning and grilling artefacts.
-- `to-issues` - slices a PRD into dependency-ordered markdown implementation slices.
-- `tdd` - implements one slice or bugfix at a time using behavior-first TDD.
-- `typescript-craft` - default companion for backend TypeScript and React TypeScript work, emphasizing maintainable code shape, DDD/hexagonal placement, React composition, TypeScript hygiene, and focused tests.
-- `orchestrate-issues` - orchestrates multiple ready issue files through implementation, independent checking, per-issue commits, and agent cleanup.
-
-## Default Artefacts
-
-- PRDs: `docs/prds/<prd_id>.md`
-- Slices: `docs/issues/<slice_id>.md`
-- Single-context shared language: `CONTEXT.md`
-- Multi-context shared language: `CONTEXT-MAP.md` plus per-context `CONTEXT.md`
-- ADRs: `docs/adr/<NNNN-slug>.md`
-
-These defaults are intentionally markdown-first and can be overridden by project convention.
-
-## Credits
-
-These skills are adapted from ideas and original skill drafts by Matt Pocock in [`mattpocock/skills`](https://github.com/mattpocock/skills), especially the engineering skills around grilling, PRDs, issue slicing, and TDD.
+TypeScript Craft is general guidance. The orchestration skills currently describe Codex-specific subagent tools and model settings; installing them in Pi does not provide those capabilities.
