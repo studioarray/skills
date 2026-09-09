@@ -72,7 +72,7 @@ Prefer names from the domain or product context:
 
 - `agent-target-runtime` is clearer than `status-utils`
 - `conversation-feed-projection` is clearer than `mapper`
-- `pi-agent-session-adapter` is clearer than `service`
+- `agent-session-adapter` is clearer than `service`
 
 Split files when separate concepts have separate change pressure. Keep files together when a module is deep and cohesive.
 

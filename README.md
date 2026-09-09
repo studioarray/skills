@@ -41,19 +41,8 @@ The orchestration skills use GPT-6 Astra medium subagents for implementation and
 
 The orchestration skills expect GitHub access, a local repository checkout, and Codex subagent tools with the requested model available. They also use these separately installed skills:
 
-- `code-review`
-- `ponytail:ponytail-review`
-- `ponytail:ponytail`
-- `codebase-design`
+- [Code Review](https://github.com/mattpocock/skills/blob/main/skills/engineering/code-review/SKILL.md) from [mattpocock/skills](https://github.com/mattpocock/skills).
+- [Codebase Design](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/SKILL.md) from [mattpocock/skills](https://github.com/mattpocock/skills).
+- [Ponytail](https://github.com/DietrichGebert/ponytail), which provides `ponytail:ponytail` and `ponytail:ponytail-review`.
 
 These dependencies are not bundled here. Install them on each computer alongside this collection. TypeScript Craft includes its supporting references in this repository.
-
-## Pi
-
-The repository also retains Pi package metadata:
-
-```bash
-pi install git:github.com/studioarray/skills
-```
-
-TypeScript Craft is general guidance. The orchestration skills currently describe Codex-specific subagent tools and model settings; installing them in Pi does not provide those capabilities.
