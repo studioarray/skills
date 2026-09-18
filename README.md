@@ -1,9 +1,10 @@
 # Studio Array skills
 
-Reusable agent skills for implementing GitHub issues, reviewing pull requests, and working in TypeScript.
+Reusable agent skills for exploring plans and decisions, implementing GitHub issues, reviewing pull requests, and working in TypeScript.
 
 | Skill | Purpose |
 | --- | --- |
+| [Interview](interview/SKILL.md) | Stress-test a plan, decision, or idea through a continuous interview. |
 | [TypeScript Craft](typescript-craft/SKILL.md) | Guide backend and React TypeScript implementation, module structure, types, and tests. |
 | [Issue to PR](issue-to-pr/SKILL.md) | Coordinate implementation of a GitHub issue and its sub-issues, then review the resulting PR. |
 | [PR review orchestration](pr-review-orchestration/SKILL.md) | Coordinate QA and fixes for an existing PR until merge readiness. |
@@ -13,13 +14,17 @@ Reusable agent skills for implementing GitHub issues, reviewing pull requests, a
 Ask Codex to install the skills on each computer:
 
 ```text
-Use $skill-installer to install typescript-craft, issue-to-pr, and
+Use $skill-installer to install interview, typescript-craft, issue-to-pr, and
 pr-review-orchestration from https://github.com/studioarray/skills.
 ```
 
 The installer creates personal skill copies. To update an existing installation, ask Codex to update it from this repository.
 
 ## Use
+
+```text
+$interview Help me stress-test this plan.
+```
 
 ```text
 $issue-to-pr https://github.com/owner/repo/issues/123
@@ -38,6 +43,8 @@ The skills can also be selected automatically when a request matches their purpo
 The orchestration skills use GPT-6 Astra medium subagents for implementation and QA. They create or update PRs, commit and push changes, and post review and fix comments. They stop at merge readiness. Testing follows each repository's guidance and CI workflows.
 
 ## Dependencies
+
+Interview uses subagent tools to investigate environmental facts while continuing with independent questions.
 
 The orchestration skills expect GitHub access, a local repository checkout, and Codex subagent tools with the requested model available. They also use these separately installed skills:
 
