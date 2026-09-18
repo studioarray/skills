@@ -13,7 +13,7 @@ Be the coordinator. Subagents handle review, implementation, and tests; you moni
 
 Read the PR, linked requirements, discussion and inline comments, and CI results. Confirm its source branch and current base/head SHAs. Use a suitable checkout that preserves existing work, and follow the repository's instructions.
 
-Use GPT-6 Astra medium for QA, coding, and nested reviewers: `model="gpt-6-astra"`, `reasoning_effort="medium"`, `fork_turns="none"`. Give agents the PR URL, checkout, reviewed SHAs, relevant requirements, and previous findings. Resolve the skills below from the current catalog so plugin updates do not break their paths. Report unavailable dependencies rather than silently changing the workflow.
+Use sub agents for QA, coding, and nested reviewers. Give agents the PR URL, checkout, reviewed SHAs, relevant requirements, and previous findings. Resolve the skills below from the current catalog so plugin updates do not break their paths. Report unavailable dependencies rather than silently changing the workflow.
 
 Run QA and coding in successive phases. Leave room for the QA lead's two parallel `code-review` reviewers; reuse idle agents as needed. Keep enough progress notes to resume the loop without losing findings or validation results.
 

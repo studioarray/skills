@@ -19,7 +19,7 @@ Resolve `ponytail:ponytail`, `codebase-design`, and `pr-review-orchestration` fr
 
 ## Delegate implementation
 
-Use GPT-6 Astra medium: `model="gpt-6-astra"`, `reasoning_effort="medium"`, `fork_turns="none"`. Start with one implementation agent and give it the issue scope, acceptance criteria, checkout, branch, repository instructions, and skill paths. Report unavailable tools or model access instead of taking over the coding yourself.
+Start with one implementation agent and give it the issue scope, acceptance criteria, checkout, branch, repository instructions, and skill paths. Report unavailable tools or model access instead of taking over the coding yourself.
 
 > Implement this issue and its in-scope sub-issues using `ponytail:ponytail` and `codebase-design`. Investigate existing behavior, work through dependencies, and keep the changes focused on the requirements.
 >
